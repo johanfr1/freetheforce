@@ -136,6 +136,14 @@ impl JsonRpcError {
     pub fn namespace_not_found(namespace: &str) -> Self {
         Self::new(-32005, &format!("Namespace not found: {}", namespace))
     }
+
+    pub fn schema_validation_failed(message: &str) -> Self {
+        Self::with_data(
+            -32006,
+            "Schema validation failed",
+            serde_json::json!({ "details": message }),
+        )
+    }
 }
 
 // API-specific request/response types

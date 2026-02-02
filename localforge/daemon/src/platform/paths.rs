@@ -128,6 +128,11 @@ impl DataDir {
         self.projects_dir().join(format!("{}.toml", namespace))
     }
 
+    /// Project schema file: <root>/config/projects/<namespace>.schema.json
+    pub fn project_schema_path(&self, namespace: &str) -> PathBuf {
+        self.projects_dir().join(format!("{}.schema.json", namespace))
+    }
+
     /// Logs directory: <root>/logs/
     pub fn logs_dir(&self) -> PathBuf {
         self.root.join("logs")

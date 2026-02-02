@@ -5,6 +5,5 @@ pub mod config;
 pub mod identity;
 pub mod init;
 pub mod logs;
+pub mod migrate;
 pub mod status;
-
-

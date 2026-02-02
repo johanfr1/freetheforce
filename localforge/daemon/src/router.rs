@@ -1,7 +1,7 @@
 //! JSON-RPC method router
 
 use crate::api::types::*;
-use crate::config::{ConfigStore, json_to_toml, toml_to_json};
+use crate::config::{ConfigStore, SchemaStore, json_to_toml, toml_to_json};
 use crate::entitlements::{Grant, GrantStore, TrustStore};
 use crate::identity::IdentityStore;
 use crate::logging::LogWriter;
@@ -18,6 +18,7 @@ pub struct DaemonContext {
     pub grant_store: GrantStore,
     pub trust_store: TrustStore,
     pub config_store: ConfigStore,
+    pub schema_store: SchemaStore,
     pub log_writer: Arc<LogWriter>,
     pub start_time: Instant,
     pub version: String,
@@ -33,6 +34,7 @@ impl DaemonContext {
             grant_store: GrantStore::new(data_dir.clone()),
             trust_store: TrustStore::new(data_dir.clone()),
             config_store: ConfigStore::new(data_dir.clone()),
+            schema_store: SchemaStore::new(data_dir.clone()),
             log_writer,
             data_dir,
             start_time: Instant::now(),
@@ -282,6 +284,11 @@ fn handle_config_get(ctx: &DaemonContext, params: &Value) -> Result<Value, JsonR
 fn handle_config_set(ctx: &DaemonContext, params: &Value) -> Result<Value, JsonRpcError> {
     let request: ConfigSetRequest = serde_json::from_value(params.clone())
         .map_err(|e| JsonRpcError::invalid_params(&e.to_string()))?;
+
+    // Validate against schema if present
+    ctx.schema_store
+        .validate(&request.namespace, &request.key, &request.value)
+        .map_err(|e| JsonRpcError::schema_validation_failed(&e.to_string()))?;
 
     let toml_value = json_to_toml(request.value)
         .ok_or_else(|| JsonRpcError::invalid_params("Cannot convert value to TOML"))?;

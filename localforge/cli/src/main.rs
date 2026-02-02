@@ -8,7 +8,7 @@ use std::process::ExitCode;
 mod client;
 mod commands;
 
-use commands::{can, config, identity, init, logs, status};
+use commands::{can, config, identity, init, logs, migrate, status};
 
 #[derive(Parser)]
 #[command(name = "forge")]
@@ -58,6 +58,20 @@ enum Commands {
         /// Filter by log level
         #[arg(long)]
         level: Option<String>,
+    },
+
+    /// Run config migrations
+    Migrate {
+        /// Project namespace
+        namespace: String,
+
+        /// Target schema version
+        #[arg(long)]
+        target: Option<u32>,
+
+        /// Dry run (preview changes without applying)
+        #[arg(long)]
+        dry_run: bool,
     },
 }
 
@@ -110,6 +124,12 @@ enum ConfigCommands {
         /// Project namespace
         namespace: String,
     },
+
+    /// Validate config against schema
+    Validate {
+        /// Project namespace
+        namespace: String,
+    },
 }
 
 #[tokio::main]
@@ -134,10 +154,18 @@ async fn main() -> ExitCode {
             }
             ConfigCommands::List { namespace } => config::list(&namespace, cli.json).await,
             ConfigCommands::Reset { namespace } => config::reset(&namespace, cli.json).await,
+            ConfigCommands::Validate { namespace } => {
+                config::validate_local(&namespace, cli.json)
+                    .map_err(|e| client::ClientError::Connection(e.to_string()))
+            }
         },
         Commands::Status => status::run(cli.json).await,
         Commands::Logs { lines, follow, level } => {
             logs::run(lines, follow, level.as_deref()).await
+        }
+        Commands::Migrate { namespace, target, dry_run } => {
+            migrate::migrate(&namespace, target, dry_run, cli.json)
+                .map_err(|e| client::ClientError::Connection(e.to_string()))
         }
     };
 

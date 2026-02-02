@@ -1,2 +1,6 @@
 /target/
 Cargo.lock
+
+# SDK
+sdk/typescript/node_modules/
+sdk/typescript/dist/

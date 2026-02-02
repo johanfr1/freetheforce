@@ -7,4 +7,4 @@ pub mod init;
 pub mod logs;
 pub mod status;
 
-pub use crate::client::ClientError;
+

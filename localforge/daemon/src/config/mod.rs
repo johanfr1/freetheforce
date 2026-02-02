@@ -4,4 +4,5 @@
 
 mod store;
 
-pub use store::{ConfigStore, ConfigError};
+pub use store::{ConfigStore, ConfigError, json_to_toml, toml_to_json};
+

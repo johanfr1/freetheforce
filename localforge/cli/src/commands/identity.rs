@@ -3,7 +3,7 @@
 use crate::client::{call, ClientError};
 use serde::Deserialize;
 use serde_json::json;
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

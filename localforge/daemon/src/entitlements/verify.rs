@@ -39,6 +39,8 @@ pub fn verify_grant(grant: &Grant) -> Result<bool, VerifyError> {
 }
 
 /// Verify a grant including time validity
+/// Reserved for Phase 0.5 SDK: provides combined signature + expiry check
+#[allow(dead_code)]
 pub fn verify_grant_full(grant: &Grant) -> Result<bool, VerifyError> {
     // Check time validity first
     grant.is_valid_now().map_err(|e| match e {

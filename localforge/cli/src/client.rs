@@ -161,6 +161,8 @@ pub async fn call<T: DeserializeOwned>(method: &str, params: Value) -> Result<T,
 }
 
 /// Call a daemon RPC method and return raw JSON
+/// Reserved for Phase 0.5 SDK: enables dynamic method dispatch
+#[allow(dead_code)]
 pub async fn call_raw(method: &str, params: Value) -> Result<Value, ClientError> {
     call(method, params).await
 }

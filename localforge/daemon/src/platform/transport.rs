@@ -7,7 +7,6 @@ use crate::platform::paths::DataDir;
 use serde::{Deserialize, Serialize};
 use std::io;
 use thiserror::Error;
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 
 #[derive(Error, Debug)]
 pub enum TransportError {

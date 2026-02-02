@@ -124,8 +124,8 @@ impl LogWriter {
         let mut guard = self.current_file.lock().unwrap();
 
         // Check if we need to open a new file
-        let file = if let Some((current_date, ref mut file)) = *guard {
-            if current_date == date {
+        let file = if let Some((ref current_date, ref mut file)) = *guard {
+            if current_date == &date {
                 file
             } else {
                 // Date changed, open new file

@@ -3,7 +3,7 @@
 use crate::api::types::*;
 use crate::config::{ConfigStore, json_to_toml, toml_to_json};
 use crate::entitlements::{Grant, GrantStore, TrustStore};
-use crate::identity::{IdentityStore, Keypair};
+use crate::identity::IdentityStore;
 use crate::logging::LogWriter;
 use crate::platform::paths::DataDir;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine};

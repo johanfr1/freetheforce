@@ -1,0 +1,30 @@
+[package]
+name = "forge-daemon"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "LocalForge daemon - local identity, trust, and config infrastructure"
+
+[[bin]]
+name = "forge-daemon"
+path = "src/main.rs"
+
+[dependencies]
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+ed25519-dalek.workspace = true
+rand.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+directories.workspace = true
+base64.workspace = true
+
+[dev-dependencies]
+tempfile = "3.14"
